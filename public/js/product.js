@@ -7,51 +7,37 @@ async function loadProducts() {
   displayProducts(allProducts);
 }
 
-function displayTasks(tasks) {
-  const taskList = document.getElementById("task-list");
-  taskList.innerHTML = "";
+function displayProducts(products) {
+  const productList = document.getElementById("product-list");
+  productList.innerHTML = "";
 
-  tasks.forEach((task) => {
+  products.forEach((product) => {
     const row = document.createElement("tr");
 
     const nameCell = document.createElement("td");
-    const descriptionCell = document.createElement("td");
-    const priorityCell = document.createElement("td");
+    const SKUCell = document.createElement("td");
+    const priceCell = document.createElement("td");
     const actionCell = document.createElement("td");
 
     const deleteButton = document.createElement("button");
-    const completeButton = document.createElement("button");
 
-    completeButton.type = "button";
-    completeButton.classList.add("complete-btn");
-
-    completeButton.innerHTML =
-      task.completed === 1
-        ? '<i data-lucide="square-check"></i>'
-        : '<i data-lucide="square"></i>';
-
-    completeButton.setAttribute("aria-label", "Markera som färdig");
-
-    completeButton.dataset.id = task.id;
-
-    nameCell.textContent = task.name;
-    descriptionCell.textContent = task.description;
-    priorityCell.textContent = task.priority;
+    nameCell.textContent = product.name;
+    SKUCell.textContent = product.SKU;
+    priceCell.textContent = product.price;
 
     deleteButton.innerHTML = '<i data-lucide="trash-2"></i>';
     deleteButton.setAttribute("aria-label", "Radera produkt");
     deleteButton.title = "Radera produkt";
     deleteButton.classList.add("delete-btn");
-    deleteButton.dataset.id = task.id;
+    deleteButton.dataset.id = product.id;
 
     row.appendChild(nameCell);
-    row.appendChild(descriptionCell);
-    row.appendChild(priorityCell);
-    actionCell.appendChild(completeButton);
+    row.appendChild(SKUCell);
+    row.appendChild(priceCell);
     actionCell.appendChild(deleteButton);
     row.appendChild(actionCell);
 
-    taskList.appendChild(row);
+    productList.appendChild(row);
   });
   lucide.createIcons();
 }
