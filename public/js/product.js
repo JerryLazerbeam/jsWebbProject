@@ -41,3 +41,64 @@ function displayProducts(products) {
   });
   lucide.createIcons();
 }
+
+document.addEventListener("click", async (event) => {
+  const deleteButton = event.target.closest(".delete-btn");
+
+  if (!deleteButton) {
+    return;
+  }
+
+  const id = deleteButton.dataset.id;
+
+  await deleteProduct(id);
+});
+
+async function deleteProduct(id) {
+  const confirmed = confirm("Vill du verkligen ta bort produkten?");
+
+  if (!confirmed) {
+    return;
+  }
+
+  const response = await fetch(`/api/products/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    alert("Det gick inte att ta bort produkten.");
+    return;
+  }
+
+  await loadProducts();
+}
+
+const productForm = document.querySelector("#product-form");
+
+productForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const name = document.querySelector("#name").value;
+  const SKU = document.querySelector("#SKU").value;
+  const price = document.querySelector("#price").value;
+  const description = document.querySelector("#description").value;
+
+  const product = { name, SKU, price, description };
+
+  const response = await fetch("/api/products", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(product),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error("Kunde inte skapa produkt!");
+  }
+
+  productForm.reset();
+  await loadProducts();
+});
+loadProducts();

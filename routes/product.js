@@ -3,12 +3,14 @@ const router = express.Router();
 import db from "../database/db.js";
 
 router.post("/", (req, res) => {
-  const { name, price, SKU, description, category } = req.body;
+  const { name, SKU, price, description } = req.body;
 
   const insertProduct = db.prepare(`
-         INSERT INTO products (name, price, SKU, description, category)
-          VALUES (?, ?, ?, ?, ?) `);
-  insertProduct.run(name.trim(), price, SKU.trim(), description.trim(), category.trim());
+    INSERT INTO products (name, SKU, price, description)
+    VALUES (?, ?, ?, ?)
+`);
+
+  insertProduct.run(name.trim(), SKU.trim(), price, description.trim());
   res.status(201).json({ message: "Produkten har skapats!" });
 });
 
